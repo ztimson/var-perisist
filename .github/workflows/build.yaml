@@ -42,12 +42,8 @@ jobs:
                 with:
                     pattern: dist
 
-            -   name: Upload Docs
-                uses: actions/upload-artifact@v3
-                with:
-                    name: docs
-                    path: docs
-                    retention-days: 7
+            -   name: Upload Wiki
+                uses: ztimson/actions/wiki@develop
 
     tag:
         name: Tag Version
