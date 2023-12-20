@@ -1,5 +1,5 @@
 {
-	"name": "perstistance",
+	"name": "persist",
 	"version": "1.0.0",
 	"description": "Sync variables with the local/session storage using proxy objects & decorators",
 	"repository": "https://git.zakscode.com/ztimson/persistance",
