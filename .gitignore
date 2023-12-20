@@ -1,0 +1,20 @@
+# IDEs and editors
+.c9
+.classpath
+.idea
+.project
+.settings
+.vscode
+*.launch
+*.sublime-workspace
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+/typings
+dist
+npm-debug.log
+node_modules
+testem.log
+junit.xml
+docs
