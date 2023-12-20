@@ -9,7 +9,7 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"build": "tsc && npm run build:docs",
-		"build:docs": "npx typedoc --readme none --out docs src/index.ts",
+		"build:docs": "npx typedoc --readme none --plugin typedoc-plugin-markdown --out docs src/index.ts",
 		"test": "npx jest --verbose",
 		"test:coverage": "npx jest --verbose --coverage",
 		"watch": "npm run build && npx tsc --watch"

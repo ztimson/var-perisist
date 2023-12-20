@@ -23,10 +23,48 @@ jobs:
             -   name: Test
                 run: npm run test:coverage
 
+            -   name: Cache Artifacts
+                uses: ztimson/actions/cache@develop
+                with:
+                    pattern: dist
+
             -   name: Upload Docs
-                if: ${{inputs.artifacts}} != "false"
                 uses: actions/upload-artifact@v3
                 with:
                     name: docs
                     path: docs
                     retention-days: 7
+
+    tag:
+        name: Tag Version
+        needs: build
+        if: ${{github.ref_name}} == 'release'
+        runs-on: ubuntu-latest
+        container: node
+        steps:
+            -   name: Clone Repository
+                uses: ztimson/actions/clone@develop
+
+            -   name: Get Version Number
+                run: echo "VERSION=$(cat package.json | grep version | grep -Eo ':.+' | grep -Eo '[[:alnum:]\.\/\-]+')" >> $GITHUB_ENV
+
+            -   name: Tag Version
+                uses: ztimson/actions/tag@develop
+                with:
+                    tag: ${{env.VERSION}}
+
+    publish:
+        name: Tag Version
+        needs: build
+        if: ${{github.ref_name}} == 'release'
+        runs-on: ubuntu-latest
+        container: node
+        steps:
+            -   name: Clone Repository
+                uses: ztimson/actions/clone@develop
+
+            -   name: Restore Artifacts
+                uses: ztimson/actions/cache/restore@develop
+
+            -   name: Upload to Registry
+                uses: ztimson/actions/npm/publish@develop
