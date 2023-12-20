@@ -42,10 +42,6 @@
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-### Demo
-
-Website: https://git.zakscode.com
-
 ### Built With
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
 
@@ -75,18 +71,23 @@ Website: https://git.zakscode.com
 ```
 3. Use persist:
 ```ts
-import {Persist, persist} from 'ztimson/persist';
+import {Persist} from 'ztimson/persist';
 
+// Proxy Object (Always access/modify using `.value`):
 let theme = new Persist<string>('theme', {default: 'os'});
-theme.value = 'light'; // Any changes will be synced to localStorage['theme'];
-// You have to access/modify your data through the `value` property while using the Persist object
 
-// Or via decorator
+console.log(theme.value) // Output: os
+theme.value = 'light'; // Changes will be synced to localStorage['theme'];
+```
+```ts
+import {persist} from 'ztimson/persist';
+
+// Using decorators
 class Theme {
-	// We are overriding the default key to use the same localStorage as above
 	@persist({key: 'theme', default: 'os'}) current!: string;
 }
-theme = new Theme();
+const theme = new Theme();
+
 console.log(theme.current); // Output: light
 theme.current = 'dark'; // You can ommit `.value` when using the decorator
 ```
