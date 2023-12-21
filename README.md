@@ -3,7 +3,7 @@
   <br />
 
   <!-- Logo -->
-  <img src="https://git.zakscode.com/repo-avatars/2b4ee6ba1f2e2618bf7694e4a52fb56d1d0ea6abafa2dcbe496ab786b86d5a76" alt="Logo" width="200" height="200">
+  <img src="https://git.zakscode.com/repo-avatars/89f6c36caf75762ed9f7f98b69044b7db30da5230be7c5cea54f8a1158f1669a" alt="Logo" width="200" height="200">
 
   <!-- Title -->
   ### Persist
