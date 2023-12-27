@@ -68,6 +68,11 @@ export class Persist<T> {
 		this.load();
 	}
 
+	/** Notify listeners of change */
+	private notify(value: T) {
+		Object.values(this.watches).forEach(watch => watch(value));
+	}
+
 	/** Delete value from storage */
 	clear() {
 		this.storage.removeItem(this.key);
@@ -101,11 +106,6 @@ export class Persist<T> {
 
 	/** Return current value */
 	valueOf() { return this.value; }
-
-	/** Notify listeners of change */
-	private notify(value: T) {
-		Object.values(this.watches).forEach(watch => watch(value));
-	}
 }
 
 /**

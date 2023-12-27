@@ -46,7 +46,7 @@
 
 Persist is an updated version of [webstorage-decorators](https://git.zakscode.com/ztimson/webstorage-decorators), a library which saves variables to local or session storage.
 
-This library aims to improve upon the original's limitations by using the new [Proxy Objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). Improvements include:
+This library aims to improve upon the original's limitations by using the new [Proxy Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). Improvements include:
  - Supports both objects & decorators
  - Proxy object ensures all changes are tracked including impure functions
  - [Proto]types and functions can be preserved by passing the `type` option
@@ -78,6 +78,27 @@ const theme = new Theme();
 
 console.log(theme.current); // Output: light
 theme.current = 'dark'; // You can ommit `.value` when using the decorator
+```
+
+Advanced uses:
+
+```ts
+import {Persist} from 'ztimson/persist';
+
+// Options are the same for both the persist decorator and object:
+let example = new Persist<string[]>('example', {
+	storage: SessionStorage, // Use a different storage solution
+	default: [], // Default value if stored value === undefined
+	type: Array // Ensures [proto]type & methods are restored
+});
+
+// Callback when changes are made
+example.watch(value => console.log(`Length - ${value.length}`));
+example.value = [1, 2, 3];
+// Output: Length - 3
+example.value.pop(); // Impure changes are saved
+// Output: Length - 2
+
 ```
 
 ### Built With
