@@ -20,8 +20,7 @@
 
   ---
   <div>
-    <a href="https://git.zakscode.com/ztimson/persist/wiki" target="_blank">Documentation</a>
-    • <a href="https://git.zakscode.com/ztimson/persist/releases" target="_blank">Release Notes</a>
+    <a href="https://git.zakscode.com/ztimson/persist/releases" target="_blank">Release Notes</a>
     • <a href="https://git.zakscode.com/ztimson/persist/issues/new?template=.github%2fissue_template%2fbug.md" target="_blank">Report a Bug</a>
     • <a href="https://git.zakscode.com/ztimson/persist/issues/new?template=.github%2fissue_template%2fenhancement.md" target="_blank">Request a Feature</a>
   </div>
@@ -32,15 +31,54 @@
 ## Table of Contents
 - [Persist](#top)
 	- [About](#about)
-		- [Built With](#built-with)
+      - [Examples](#examples) 
+      - [Built With](#built-with)
 	- [Setup](#setup)
-		- [Production](#production)
-		- [Development](#development)
+      - [Production](#production)
+      - [Development](#development)
+    - [Documentation](#documentation)
+      - [Classes](#classes)
+      - [Decorators](#decorators)
+      - [Types](#types)
 	- [License](#license)
 
 ## About
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Persist is an updated version of [webstorage-decorators](https://git.zakscode.com/ztimson/webstorage-decorators), a library which saves variables to local or session storage.
+
+This library aims to improve upon the original's limitations by using the new [Proxy Objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). Improvements include:
+ - Supports both objects & decorators
+ - Proxy object ensures all changes are tracked including impure functions
+ - [Proto]types and functions can be preserved by passing the `type` option
+
+JavaScript's decorators are currently undergoing changes to the API overseen by [TC39](https://tc39.es) and currently have no support for property decorators. [Experimental decorators](https://www.typescriptlang.org/tsconfig#experimentalDecorators) must be enabled to work properly.
+
+### Examples
+
+Using objects:
+```ts
+import {Persist} from 'ztimson/persist';
+
+// Proxy Object (Always access/modify using `.value`):
+let theme = new Persist<string>('theme', {default: 'os'});
+
+console.log(theme.value) // Output: os
+theme.value = 'light'; // Changes will be synced to localStorage['theme'];
+```
+
+Using decorators:
+```ts
+import {persist} from 'ztimson/persist';
+
+// Using decorators
+class Theme {
+	@persist({key: 'theme', default: 'os'}) current!: string;
+}
+const theme = new Theme();
+
+console.log(theme.current); // Output: light
+theme.current = 'dark'; // You can ommit `.value` when using the decorator
+```
 
 ### Built With
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
@@ -69,28 +107,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 	...
 }
 ```
-3. Use persist:
-```ts
-import {Persist} from 'ztimson/persist';
+3. Import & use, see [examples above](#examples)
 
-// Proxy Object (Always access/modify using `.value`):
-let theme = new Persist<string>('theme', {default: 'os'});
-
-console.log(theme.value) // Output: os
-theme.value = 'light'; // Changes will be synced to localStorage['theme'];
-```
-```ts
-import {persist} from 'ztimson/persist';
-
-// Using decorators
-class Theme {
-	@persist({key: 'theme', default: 'os'}) current!: string;
-}
-const theme = new Theme();
-
-console.log(theme.current); // Output: light
-theme.current = 'dark'; // You can ommit `.value` when using the decorator
-```
 </details>
 
 <details>
@@ -107,6 +125,135 @@ theme.current = 'dark'; // You can ommit `.value` when using the decorator
 1. Install the dependencies: `npm i`
 2. Build library & docs: `npm build`
 3. Run unit tests: `npm test`
+
+</details>
+
+## Documentation
+
+<details>
+<summary>
+  <h3 id="classes" style="display: inline">
+    Classes
+  </h3>
+</summary>
+
+Create a proxy object which wraps your data so any changes can be intercepted & synced with storage.
+
+Your data is stored under the `value` property and should always be accessed/modified through it.
+
+#### Example
+
+```ts
+import {Persist} from 'ztimson/persist'
+
+const theme = new Persist('theme.current', {default: 'os'});
+
+console.log(theme.value); // Output: os
+theme.value = 'light'; // Make sure you always use .value to access/modify data
+
+location.reload(); // Simulate refresh
+console.log(theme.value); // Output: light
+```
+
+#### Constructor
+
+`Persist<T>(key: string, options?: PersistOptions)`
+
+| Argument  | Type                                             | Description                                                 |
+|-----------|--------------------------------------------------|-------------------------------------------------------------|
+| `key`     | `string`                                         | Primary key value will be stored under                      |
+| `options` | [`PersistOptions<T>`](../Home.md#persistoptions) | Configure using [PersistOptions](../Home.md#persistoptions) |
+
+
+#### Properties
+
+| Name      | Type                                             | Description                                                 |
+|-----------|--------------------------------------------------|-------------------------------------------------------------|
+| `key`     | `string`                                         | Primary key value will be stored under                      |
+| `options` | [`PersistOptions<T>`](../Home.md#persistoptions) | Configure using [PersistOptions](../Home.md#persistoptions) |
+| `value`   | `T`                                              | Current value                                               |
+
+#### Methods
+
+##### clear
+
+Delete value from storage
+
+`clear(): void`
+
+##### load
+
+Load value from storage
+
+`load(): void`
+
+##### save
+
+Save current value to storage
+
+`save(): void`
+
+##### watch
+
+Register callback to listen for changes
+
+`watch(fn: (value: T) => void): void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `fn` | (`value`: `T`) => `any` |
+
+##### toString
+
+Return value as JSON string
+
+`toString(): string`
+
+###### Returns
+
+`string` - Stringified JSON object
+
+##### valueOf
+
+Return current value
+
+`valueOf(): T`
+
+###### Returns
+
+`T` - Current value
+
+</details>
+
+<details>
+<summary>
+  <h3 id="decorators" style="display: inline">
+    Decorators
+  </h3>
+</summary>
+
+`persist(options?: {key?: string} & PersistOptions<T>)`
+
+</details>
+
+<details>
+<summary>
+  <h3 id="types" style="display: inline">
+    Types
+  </h3>
+</summary>
+
+`PersistOptions<T>`
+
+Configurable options to change persistence behavior
+
+| Property   | Type      | Description                                                                            |
+|------------|-----------|----------------------------------------------------------------------------------------|
+| `default?` | `T`       | Default/Initial value if undefined                                                     |
+| `storage?` | `Storage` | Storage implementation, defaults to LocalStorage. Can also be used with SessionStorage |
+| `type?`    | `any`     | Force value to have \[proto\]type                                                      |
 
 </details>
 

@@ -1,5 +1,5 @@
 /**
- * Configurations persistence behaviour
+ * Configurable options to change persistence behavior
  *
  * @group Options
  */
@@ -8,7 +8,7 @@ export type PersistOptions<T> = {
 	default?: T,
 	/** Storage implementation, defaults to LocalStorage */
 	storage?: Storage,
-	/** Force value to have prototype */
+	/** Force value to have [proto]type */
 	type?: any,
 }
 
@@ -27,12 +27,15 @@ export type PersistOptions<T> = {
  * ```
  */
 export class Persist<T> {
+	/** Backend service to store data, must implement `Storage` interface */
+	private readonly storage!: Storage;
+	/** Listeners which should be notified on changes */
+	private watches: { [key: string]: Function } = {};
+
 	/** Private value field */
 	private _value!: T;
-
 	/** Current value or default if undefined */
 	get value(): T { return this._value !== undefined ? this._value : <T>this.options?.default; }
-
 	/** Set value with proxy object wrapper to sync future changes */
 	set value(v: T | undefined) {
 		if(v == null || typeof v != 'object') this._value = <T>v;
@@ -56,13 +59,8 @@ export class Persist<T> {
 		this.save();
 	}
 
-	/** Where data gets physically stored */
-	private readonly storage!: Storage;
-	/** Listeners which should be notified on changes */
-	private watches: { [key: string]: Function } = {};
-
 	/**
-	 * @param {string} key Unique key value will be stored under
+	 * @param {string} key Primary key value will be stored under
 	 * @param {PersistOptions<T>} options Configure using {@link PersistOptions}
 	 */
 	constructor(public readonly key: string, public options: PersistOptions<T> = {}) {
@@ -101,8 +99,8 @@ export class Persist<T> {
 	/** Return value as JSON string */
 	toString() { return JSON.stringify(this.value); }
 
-	/** Return raw value */
-	valueOf() { return this.value?.valueOf(); }
+	/** Return current value */
+	valueOf() { return this.value; }
 
 	/** Notify listeners of change */
 	private notify(value: T) {

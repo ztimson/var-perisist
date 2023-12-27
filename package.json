@@ -1,6 +1,6 @@
 {
 	"name": "persist",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Sync variables with the local/session storage using proxy objects & decorators",
 	"repository": "https://git.zakscode.com/ztimson/persistance",
 	"author": "Zak Timson",
@@ -9,7 +9,7 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"build": "tsc && npm run build:docs",
-		"build:docs": "npx typedoc --readme none --plugin typedoc-plugin-markdown --entryDocument Home.md --out docs src/index.ts",
+		"build:docs": "npx typedoc --readme none --out docs src/index.ts",
 		"test": "npx jest --verbose",
 		"test:coverage": "npx jest --verbose --coverage",
 		"watch": "npm run build && npx tsc --watch"
@@ -27,7 +27,6 @@
 		"jest-junit": "^16.0.0",
 		"ts-jest": "^29.1.1",
 		"typedoc": "^0.25.4",
-		"typedoc-plugin-markdown": "^3.17.1",
 		"typescript": "^5.3.3"
 	},
 	"files": [
