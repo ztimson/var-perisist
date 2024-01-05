@@ -47,11 +47,11 @@
 Persist is an updated version of [webstorage-decorators](https://git.zakscode.com/ztimson/webstorage-decorators), a library which saves variables to local or session storage.
 
 This library aims to improve upon the original's limitations by using the new [Proxy Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). Improvements include:
- - Supports both objects & decorators
+ - Supports both OOP & Decorator patterns
  - Proxy object ensures all changes are tracked including impure functions
  - [Proto]types and functions can be preserved by passing the `type` option
 
-JavaScript's decorators are currently undergoing changes to the API overseen by [TC39](https://tc39.es) and currently have no support for property decorators. [Experimental decorators](https://www.typescriptlang.org/tsconfig#experimentalDecorators) must be enabled to work properly.
+**Disclaimer:** JavaScript's decorators are currently undergoing changes to the API overseen by [TC39](https://tc39.es) and currently have no support for property decorators. [Experimental decorators](https://www.typescriptlang.org/tsconfig#experimentalDecorators) must be enabled to work properly.
 
 ### Examples
 
@@ -186,7 +186,7 @@ console.log(theme.value); // Output: light
 | `options` | [`PersistOptions<T>`](../Home.md#persistoptions) | Configure using [PersistOptions](../Home.md#persistoptions) |
 
 
-#### Properties
+###### Properties
 
 | Name      | Type                                             | Description                                                 |
 |-----------|--------------------------------------------------|-------------------------------------------------------------|
@@ -216,15 +216,19 @@ Save current value to storage
 
 ##### watch
 
-Register callback to listen for changes
+Callback function which is run when there are changes
 
 `watch(fn: (value: T) => void): void`
 
-#### Parameters
+###### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `fn` | (`value`: `T`) => `any` |
+| Name | Type                    | Description                                                                           |
+|------|-------------------------|---------------------------------------------------------------------------------------|
+| `fn` | (`value`: `T`) => `any` | Callback will run on each change; it's passed the next value & it's return is ignored |
+
+###### Returns
+
+`() => void` - Function which will unsubscribe the watch/callback when called
 
 ##### toString
 
@@ -238,7 +242,7 @@ Return value as JSON string
 
 ##### valueOf
 
-Return current value
+Current value
 
 `valueOf(): T`
 
@@ -255,7 +259,36 @@ Return current value
   </h3>
 </summary>
 
+Create a proxy object which wraps your data so any changes can be intercepted & synced with storage.
+
+Your data is stored under the value property and should always be accessed/modified through it.
+
+#### Example
+
+```ts
+class Theme {
+	// This property will automatically sync with localStorage
+	@Persist({default: 'os'}) current!: string;
+
+	constructor() {
+		console.log(this.current); // Output: os
+		this.current == localStorage.getItem('Thene.current'); // True
+		this.current = 'light';
+		console.log(this.current); // Output: light
+	}
+}
+
+```
+
+#### Constructor
+
 `persist(options?: {key?: string} & PersistOptions<T>)`
+
+| Argument  | Type                                                               | Description                                                                                                                   |
+|-----------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `options` | `{key: string}` & [`PersistOptions<T>`](../Home.md#persistoptions) | Configure using [PersistOptions](../Home.md#persistoptions). Storage key can also be ovverriden by passing `key` as an option |
+
+
 
 </details>
 

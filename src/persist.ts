@@ -94,17 +94,30 @@ export class Persist<T> {
 		} else this.value = this.options.default || <T>undefined;
 	}
 
-	/** Callback to listen for changes */
+	/**
+	 * Callback function which is run when there are changes
+	 *
+	 * @param {(value: T) => any} fn Callback will run on each change; it's passed the next value & it's return is ignored
+	 * @returns {() => void} Function which will unsubscribe the watch/callback when called
+	 */
 	watch(fn: (value: T) => any): () => void {
 		const index = Object.keys(this.watches).length;
 		this.watches[index] = fn;
 		return () => { delete this.watches[index]; };
 	}
 
-	/** Return value as JSON string */
+	/**
+	 * Return value as JSON string
+	 *
+	 * @returns {string} Stringified object as JSON
+	 */
 	toString() { return JSON.stringify(this.value); }
 
-	/** Return current value */
+	/**
+	 * Return current value
+	 *
+	 * @returns {T} Current value
+	 */
 	valueOf() { return this.value; }
 }
 

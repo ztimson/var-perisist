@@ -77,3 +77,10 @@ jobs:
 
             -   name: Upload to Registry
                 uses: ztimson/actions/npm/publish@develop
+
+            -   name: Upload to NPM
+                uses: ztimson/actions/npm/publish@develop
+                with:
+                    owner: ztimson
+                    registry: https://registry.npmjs.org
+                    token: ${{secrets.NPM_TOKEN}}
