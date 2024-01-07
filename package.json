@@ -1,8 +1,11 @@
 {
-	"name": "persist",
-	"version": "1.0.3",
+	"name": "var-persist",
+	"version": "1.0.0",
 	"description": "Sync variables with the local/session storage using proxy objects & decorators",
-	"repository": "https://git.zakscode.com/ztimson/persistance",
+	"repository": {
+		"type": "git",
+		"url": "https://git.zakscode.com/ztimson/var-persist"
+	},
 	"author": "Zak Timson",
 	"license": "MIT",
 	"main": "dist/index.js",

@@ -6,10 +6,10 @@
   <img src="https://git.zakscode.com/repo-avatars/89f6c36caf75762ed9f7f98b69044b7db30da5230be7c5cea54f8a1158f1669a" alt="Logo" width="200" height="200">
 
   <!-- Title -->
-  ### Persist
+  ### var-persist
 
   <!-- Description -->
-  Typescript Library to Sync Variables with LocalStorage
+  TypeScript: Sync variables with localStorage
 
   <!-- Repo badges -->
   [![Version](https://img.shields.io/badge/dynamic/json.svg?label=Version&style=for-the-badge&url=https://git.zakscode.com/api/v1/repos/ztimson/persist/tags&query=$[0].name)](https://git.zakscode.com/ztimson/persist/tags)
@@ -29,7 +29,7 @@
 </div>
 
 ## Table of Contents
-- [Persist](#top)
+- [var-persist](#top)
 	- [About](#about)
       - [Examples](#examples) 
       - [Built With](#built-with)
@@ -44,7 +44,7 @@
 
 ## About
 
-Persist is an updated version of [webstorage-decorators](https://git.zakscode.com/ztimson/webstorage-decorators), a library which saves variables to local or session storage.
+Var-Persist is an updated version of [webstorage-decorators](https://git.zakscode.com/ztimson/webstorage-decorators), a library which saves variables to local or session storage.
 
 This library aims to improve upon the original's limitations by using the new [Proxy Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). Improvements include:
  - Supports both OOP & Decorator patterns
@@ -57,7 +57,7 @@ This library aims to improve upon the original's limitations by using the new [P
 
 Using objects:
 ```ts
-import {Persist} from 'ztimson/persist';
+import {Persist} from 'var-persist';
 
 // Proxy Object (Always access/modify using `.value`):
 let theme = new Persist<string>('theme', {default: 'os'});
@@ -68,7 +68,7 @@ theme.value = 'light'; // Changes will be synced to localStorage['theme'];
 
 Using decorators:
 ```ts
-import {persist} from 'ztimson/persist';
+import {persist} from 'var-persist';
 
 // Using decorators
 class Theme {
@@ -83,7 +83,7 @@ theme.current = 'dark'; // You can ommit `.value` when using the decorator
 Advanced uses:
 
 ```ts
-import {Persist} from 'ztimson/persist';
+import {Persist} from 'var-persist';
 
 // Options are the same for both the persist decorator and object:
 let example = new Persist<string[]>('example', {
@@ -117,7 +117,7 @@ example.value.pop(); // Impure changes are saved
 - [Node.js](https://nodejs.org/en/download)
 
 #### Instructions
-1. Install persist: `npm i ztimson/persist`
+1. Install persist: `npm i var-persist`
 2. Enable decorators inside `tsconfig.json`:
 ```json
 {
@@ -165,7 +165,7 @@ Your data is stored under the `value` property and should always be accessed/mod
 #### Example
 
 ```ts
-import {Persist} from 'ztimson/persist'
+import {Persist} from 'var-persist'
 
 const theme = new Persist('theme.current', {default: 'os'});
 
@@ -266,6 +266,8 @@ Your data is stored under the value property and should always be accessed/modif
 #### Example
 
 ```ts
+import {Persist} from 'var-persist';
+
 class Theme {
 	// This property will automatically sync with localStorage
 	@Persist({default: 'os'}) current!: string;
