@@ -40,7 +40,7 @@ jobs:
             -   name: Cache Artifacts
                 uses: ztimson/actions/cache@develop
                 with:
-					key: dist
+                    key: dist
                     pattern: dist
     tag:
         name: Tag Version
