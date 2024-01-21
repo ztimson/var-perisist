@@ -40,6 +40,7 @@ jobs:
             -   name: Cache Artifacts
                 uses: ztimson/actions/cache@develop
                 with:
+					key: dist
                     pattern: dist
     tag:
         name: Tag Version
@@ -74,6 +75,8 @@ jobs:
 
             -   name: Restore Artifacts
                 uses: ztimson/actions/cache/restore@develop
+                with:
+                    key: dist
 
             -   name: Upload to Registry
                 uses: ztimson/actions/npm/publish@develop
