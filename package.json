@@ -1,6 +1,6 @@
 {
 	"name": "var-persist",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Sync variables with the local/session storage using proxy objects & decorators",
 	"repository": {
 		"type": "git",
